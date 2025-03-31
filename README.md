@@ -9,6 +9,12 @@ Sokoban est une implémentation du célèbre jeu de puzzle où le joueur doit po
 - **Gestion des cartes** : Chargement des cartes depuis des fichiers texte.
 - **Déplacements** : Déplacement du joueur avec gestion des collisions et des règles du jeu.
 
+## Exemple d'Interface
+
+Voici un exemple de l'interface graphique du jeu :
+
+![Exemple de l'interface du jeu](./bin/img/exempleInterface.png)
+
 ## Structure du Projet
 
 - **`src/Modele`** : Contient les classes principales pour la logique du jeu (e.g., `Carte`, `Joueur`, `Caisse`, etc.).
