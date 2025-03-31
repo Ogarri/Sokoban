@@ -137,6 +137,18 @@ public class Carte {
         return true;
     }
 
+    public int getLargeur() {
+        return largeur;
+    }
+
+    public int getHauteur() {
+        return hauteur;
+    }
+
+    public Element[][] getGrille() {
+        return grille;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
