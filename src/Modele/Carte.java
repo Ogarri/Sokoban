@@ -79,22 +79,27 @@ public class Carte {
             if (destination instanceof Sol || destination instanceof Destination) { // Vérifie que la destination est un Sol ou une Destination
                 grille[joueur.getY()][joueur.getX()] = (grille[joueur.getY()][joueur.getX()] instanceof Destination) 
                                                         ? new Destination() 
-                                                        : new Sol(); // Restaure la case précédente
+                                                        : new Sol(); // Restaure correctement la case précédente
                 joueur.setPosition(newX, newY);
                 grille[newY][newX] = joueur;
                 mettreAJourAffichage(); // Mise à jour de l'affichage après modification
             } else if (destination instanceof Caisse caisse) { // Vérifie que la destination est une Caisse
+                if (caisse.isSurDestination()) {
+                    return; // Empêche de pousser une caisse sur une destination
+                }
                 int nextX = newX + direction.getDx();
                 int nextY = newY + direction.getDy();
 
-                if (nextX >= 0 && nextX < largeur && nextY >= 0 && nextY < hauteur && 
-                    (grille[nextY][nextX] instanceof Sol || grille[nextY][nextX] instanceof Destination)) {
-                    // Déplace la caisse
-                    grille[nextY][nextX] = caisse;
+                if (nextX >= 0 && nextX < largeur && nextY >= 0 && nextY < hauteur) {
+                    if (grille[nextY][nextX] instanceof Destination) {
+                        grille[nextY][nextX] = new Caisse(true); // Transforme en caisse sur destination
+                    } else {
+                        grille[nextY][nextX] = caisse; // Déplace la caisse normalement
+                    }
                     grille[newY][newX] = joueur;
                     grille[joueur.getY()][joueur.getX()] = (grille[joueur.getY()][joueur.getX()] instanceof Destination) 
                                                             ? new Destination() 
-                                                            : new Sol(); // Restaure la case précédente
+                                                            : new Sol(); // Restaure correctement la case précédente
                     joueur.setPosition(newX, newY);
                     mettreAJourAffichage(); // Mise à jour de l'affichage après modification
                 }

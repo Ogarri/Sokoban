@@ -7,6 +7,10 @@ public class Caisse extends Element {
         this.surDestination = surDestination;
     }
 
+    public boolean isSurDestination() {
+        return surDestination;
+    }
+
     @Override
     public char getSymbole() {
         return surDestination ? '*' : '$';

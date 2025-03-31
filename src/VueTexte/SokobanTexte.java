@@ -8,10 +8,10 @@ import java.util.List;
 
 public class SokobanTexte {
     public static void main(String[] args) {
-        // Lecture de la carte depuis le fichier map1.txt
+        // Lecture de la carte depuis le fichier map4.txt
         List<String> carteTexte;
         try {
-            Lecture lecture = new Lecture("bin/map/map1.txt");
+            Lecture lecture = new Lecture("bin/map/map4.txt");
             carteTexte = lecture.getLignes();
         } catch (IOException e) {
             System.err.println("Erreur lors de la lecture du fichier: " + e.getMessage());

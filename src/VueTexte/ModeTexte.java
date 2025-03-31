@@ -2,14 +2,24 @@ package VueTexte;
 
 import Modele.Carte;
 import Modele.Direction;
-import Modele.Outil;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class ModeTexte {
+
+    public static void main(String[] args) {
+        try {
+            // Initialisation de la carte avec un argument valide
+            Carte carte = new Carte("defaultMap"); // Remplacez "defaultMap" par un argument approprié
+            ModeTexte modeTexte = new ModeTexte(carte);
+            modeTexte.lancerPartie();
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'initialisation de la carte : " + e.getMessage());
+        }
+    }
+
     private final Carte carte;
     private final Map<Character, Direction> commandes;
 
@@ -28,29 +38,20 @@ public class ModeTexte {
     }
 
     // Méthode pour lire le déplacement du joueur
-    public String lireDeplacement() {
-        System.out.print("Entrez un déplacement (z=haut, s=bas, q=gauche, d=droite) : ");
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine().trim().toLowerCase();
-
-        if (commandes.containsKey(input.charAt(0))) {
-            carte.deplacerJoueur(commandes.get(input.charAt(0)));
-            afficherCarte(); // Mettre à jour l'affichage après chaque déplacement
-        } else {
-            System.out.println("Déplacement invalide !");
-        }
-        return input;
-    }
-
-    private char lireCommande() {
-        Scanner scanner = new Scanner(System.in);
+    public char lireCommande() {
+        Scanner scanner = new Scanner(System.in); // Scanner non fermé pour réutilisation
         char commande;
         do {
-            System.out.print("Entrez une commande (q: gauche, z: haut, d: droite, s: bas) : ");
+            System.out.print("Entrez un déplacement (z=haut, s=bas, q=gauche, d=droite) : ");
             String input = scanner.nextLine().trim().toLowerCase();
             commande = input.isEmpty() ? ' ' : input.charAt(0);
-        } while (!commandes.containsKey(commande));
+        } while (!commandes.containsKey(commande)); // Vérifie si la commande est valide
         return commande;
+    }
+
+    // Méthode pour lire le déplacement du joueur (alias pour lireCommande)
+    public String lireDeplacement() {
+        return String.valueOf(lireCommande());
     }
 
     public void lancerPartie() {
@@ -60,8 +61,10 @@ public class ModeTexte {
         while (!carte.finDePartie()) {
             char commande = lireCommande();
             Direction direction = commandes.get(commande);
-            carte.deplacerJoueur(direction);
-            afficherCarte(); // Mettre à jour l'affichage après chaque déplacement
+            if (direction != null) {
+                carte.deplacerJoueur(direction);
+                afficherCarte(); // Mettre à jour l'affichage après chaque déplacement
+            }
         }
 
         System.out.println("Fin de la partie !");
