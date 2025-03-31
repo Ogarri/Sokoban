@@ -22,6 +22,10 @@ public class Joueur extends Element {
         return y;
     }
 
+    public boolean isSurDestination() {
+        return surDestination;
+    }
+
     @Override
     public char getSymbole() {
         return surDestination ? '+' : '@';

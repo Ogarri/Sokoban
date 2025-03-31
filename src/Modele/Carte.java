@@ -77,11 +77,13 @@ public class Carte {
             Element destination = grille[newY][newX];
 
             if (destination instanceof Sol || destination instanceof Destination) { // Vérifie que la destination est un Sol ou une Destination
-                grille[joueur.getY()][joueur.getX()] = (grille[joueur.getY()][joueur.getX()] instanceof Destination) 
-                                                        ? new Destination() 
-                                                        : new Sol(); // Restaure correctement la case précédente
+                grille[joueur.getY()][joueur.getX()] = (grille[joueur.getY()][joueur.getX()] instanceof Joueur joueurActuel && joueurActuel.isSurDestination()) 
+                                                        ? new Destination() // Si le joueur était sur une destination, restaure la destination
+                                                        : new Sol(); // Sinon, restaure un sol
                 joueur.setPosition(newX, newY);
-                grille[newY][newX] = joueur;
+                grille[newY][newX] = (destination instanceof Destination) 
+                                     ? new Joueur(true) // Transforme en joueur sur destination
+                                     : joueur; // Sinon, joueur normal
                 mettreAJourAffichage(); // Mise à jour de l'affichage après modification
             } else if (destination instanceof Caisse caisse) { // Vérifie que la destination est une Caisse
                 if (caisse.isSurDestination()) {
@@ -112,7 +114,15 @@ public class Carte {
     }
 
     public boolean finDePartie() {
-        return false;
+        for (int y = 0; y < hauteur; y++) {
+            for (int x = 0; x < largeur; x++) {
+                Element element = grille[y][x];
+                if (element instanceof Caisse caisse && !caisse.isSurDestination()) {
+                    return false; // Si une caisse n'est pas sur une destination, la partie n'est pas terminée
+                }
+            }
+        }
+        return true; // Toutes les caisses sont sur des destinations
     }
 
     // Méthode pour vérifier si le jeu est terminé
