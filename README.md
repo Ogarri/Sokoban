@@ -7,6 +7,8 @@ Sokoban est une implémentation du célèbre jeu de puzzle où le joueur doit po
 - **Mode Graphique** : Une interface graphique utilisant `Swing` pour jouer au jeu.
 - **Mode Texte** : Une interface en mode console pour jouer au jeu.
 - **Gestion des cartes** : Chargement des cartes depuis des fichiers texte.
+- **Enchaînement des niveaux** : Les cartes `map1.txt`, `map2.txt` et `map3.txt` sont jouées successivement.
+- **Réinitialisation du niveau** : Réinitialisez le niveau actuel avec la touche `r`.
 - **Déplacements** : Déplacement du joueur avec gestion des collisions et des règles du jeu.
 
 ## Exemple d'Interface
@@ -44,9 +46,9 @@ Voici un exemple de l'interface graphique du jeu :
 
 ### Mode Texte
 
-1. Exécutez la classe `SokobanTexte` :
+1. Exécutez la classe `ModeTexte` :
    ```bash
-   java -cp src VueTexte.SokobanTexte
+   java -cp src VueTexte.ModeTexte
    ```
 
 ## Contrôles
@@ -55,6 +57,7 @@ Voici un exemple de l'interface graphique du jeu :
 - **Q** : Déplacer vers la gauche.
 - **S** : Déplacer vers le bas.
 - **D** : Déplacer vers la droite.
+- **R** : Réinitialiser le niveau actuel.
 
 ## Fichiers de Cartes
 
@@ -71,6 +74,11 @@ Les fichiers de cartes sont situés dans le dossier `bin/map`. Chaque fichier re
 - `@` : Joueur
 - `$` : Caisse
 - `.` : Destination
+
+Les cartes sont jouées dans l'ordre suivant :
+1. `map1.txt`
+2. `map2.txt`
+3. `map3.txt`
 
 ## Contribution
 

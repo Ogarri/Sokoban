@@ -1,7 +1,7 @@
 package Modele;
 
 public class Joueur extends Element {
-    private final boolean surDestination;
+    private boolean surDestination;
     private int x;
     private int y;
 
@@ -24,6 +24,10 @@ public class Joueur extends Element {
 
     public boolean isSurDestination() {
         return surDestination;
+    }
+
+    public void setSurDestination(boolean surDestination) {
+        this.surDestination = surDestination;
     }
 
     @Override

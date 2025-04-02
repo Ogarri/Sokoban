@@ -8,13 +8,14 @@ public class Carte {
     private final int hauteur;
     private final Element[][] grille;
     private final List<String> lignes;
+    private final List<String> carteInitiale;
     private List<String> carteTexte;
     private Joueur joueur;
-    private List<Case> cases; // Déclaration de la liste des cases
+    private List<Case> cases;
 
-    // Constructeur acceptant une List<String>
     public Carte(List<String> carteTexte) {
         this.carteTexte = carteTexte;
+        this.carteInitiale = List.copyOf(carteTexte);
         this.lignes = carteTexte;
         this.hauteur = lignes.size();
         this.largeur = lignes.get(0).length();
@@ -37,6 +38,7 @@ public class Carte {
     public Carte(String nomFichier) throws IOException {
         Lecture lecture = new Lecture(nomFichier);
         this.lignes = lecture.getLignes();
+        this.carteInitiale = List.copyOf(lignes);
         this.hauteur = lignes.size();
         this.largeur = lignes.get(0).length();
         this.grille = new Element[hauteur][largeur];
@@ -76,41 +78,43 @@ public class Carte {
         if (newX >= 0 && newX < largeur && newY >= 0 && newY < hauteur) {
             Element destination = grille[newY][newX];
 
-            if (destination instanceof Sol || destination instanceof Destination) { // Vérifie que la destination est un Sol ou une Destination
-                grille[joueur.getY()][joueur.getX()] = (grille[joueur.getY()][joueur.getX()] instanceof Joueur joueurActuel && joueurActuel.isSurDestination()) 
-                                                        ? new Destination() // Si le joueur était sur une destination, restaure la destination
-                                                        : new Sol(); // Sinon, restaure un sol
+            if (destination instanceof Sol || destination instanceof Destination) {
+                grille[joueur.getY()][joueur.getX()] = (joueur.isSurDestination()) 
+                                                        ? new Destination()
+                                                        : new Sol();
                 joueur.setPosition(newX, newY);
-                grille[newY][newX] = (destination instanceof Destination) 
-                                     ? new Joueur(true) // Transforme en joueur sur destination
-                                     : joueur; // Sinon, joueur normal
-                mettreAJourAffichage(); // Mise à jour de l'affichage après modification
-            } else if (destination instanceof Caisse caisse) { // Vérifie que la destination est une Caisse
-                if (caisse.isSurDestination()) {
-                    return; // Empêche de pousser une caisse sur une destination
-                }
+                joueur.setSurDestination(destination instanceof Destination);
+                grille[newY][newX] = joueur;
+                mettreAJourAffichage();
+            } else if (destination instanceof Caisse caisse) {
                 int nextX = newX + direction.getDx();
                 int nextY = newY + direction.getDy();
 
                 if (nextX >= 0 && nextX < largeur && nextY >= 0 && nextY < hauteur) {
-                    if (grille[nextY][nextX] instanceof Destination) {
-                        grille[nextY][nextX] = new Caisse(true); // Transforme en caisse sur destination
-                    } else {
-                        grille[nextY][nextX] = caisse; // Déplace la caisse normalement
+                    Element nextDestination = grille[nextY][nextX];
+
+                    if (nextDestination instanceof Sol || nextDestination instanceof Destination) {
+                        grille[nextY][nextX] = (nextDestination instanceof Destination) 
+                                               ? new Caisse(true)
+                                               : new Caisse(false);
+                        grille[newY][newX] = (caisse.isSurDestination()) 
+                                             ? new Destination()
+                                             : new Sol();
+                        grille[joueur.getY()][joueur.getX()] = (joueur.isSurDestination()) 
+                                                                ? new Destination()
+                                                                : new Sol();
+                        joueur.setPosition(newX, newY);
+                        joueur.setSurDestination(destination instanceof Destination);
+                        grille[newY][newX] = joueur;
+                        mettreAJourAffichage();
                     }
-                    grille[newY][newX] = joueur;
-                    grille[joueur.getY()][joueur.getX()] = (grille[joueur.getY()][joueur.getX()] instanceof Destination) 
-                                                            ? new Destination() 
-                                                            : new Sol(); // Restaure correctement la case précédente
-                    joueur.setPosition(newX, newY);
-                    mettreAJourAffichage(); // Mise à jour de l'affichage après modification
                 }
             }
         }
     }
 
     private void mettreAJourAffichage() {
-        System.out.println(this); // Affiche l'état actuel de la carte
+        System.out.println(this);
     }
 
     public boolean finDePartie() {
@@ -118,23 +122,35 @@ public class Carte {
             for (int x = 0; x < largeur; x++) {
                 Element element = grille[y][x];
                 if (element instanceof Caisse caisse && !caisse.isSurDestination()) {
-                    return false; // Si une caisse n'est pas sur une destination, la partie n'est pas terminée
+                    return false;
                 }
             }
         }
-        return true; // Toutes les caisses sont sur des destinations
+        return true;
     }
 
-    // Méthode pour vérifier si le jeu est terminé
     public boolean estTerminee() {
-        // Implémentez la logique pour vérifier si tous les objectifs sont atteints
-        // Exemple : vérifiez si toutes les cases cibles contiennent des caisses
-        for (Case c : cases) { // Supposons que 'cases' est une liste des cases de la carte
+        for (Case c : cases) {
             if (c.estCible() && !c.contientCaisse()) {
                 return false;
             }
         }
         return true;
+    }
+
+    public void reinitialiser() {
+        for (int y = 0; y < hauteur; y++) {
+            String ligne = carteInitiale.get(y);
+            for (int x = 0; x < largeur; x++) {
+                char c = ligne.charAt(x);
+                Element element = creerElement(c);
+                grille[y][x] = element;
+                if (element instanceof Joueur joueurElement) {
+                    joueur = joueurElement;
+                    joueur.setPosition(x, y);
+                }
+            }
+        }
     }
 
     public int getLargeur() {
@@ -154,14 +170,13 @@ public class Carte {
         StringBuilder sb = new StringBuilder();
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {
-                sb.append(grille[y][x].getSymbole()); // Utilise getSymbole() pour chaque élément
+                sb.append(grille[y][x].getSymbole());
             }
             sb.append("\n");
         }
         return sb.toString();
     }
 
-    // Classe interne ou externe représentant une case de la carte
     public static class Case {
         private boolean estCible;
         private boolean contientCaisse;
@@ -184,10 +199,8 @@ public class Carte {
         }
     }
 
-    // Exemple d'utilisation de la liste 'cases'
     public void afficherCases() {
         for (Case c : cases) {
-            // Ajoutez ici le traitement pour chaque case
         }
     }
 }
