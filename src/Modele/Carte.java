@@ -12,6 +12,7 @@ public class Carte {
     private List<String> carteTexte;
     private Joueur joueur;
     private List<Case> cases;
+    private final boolean[][] destinationsInitiales; // Mémoire des cases initialement "."
 
     public Carte(List<String> carteTexte) {
         this.carteTexte = carteTexte;
@@ -20,6 +21,7 @@ public class Carte {
         this.hauteur = lignes.size();
         this.largeur = lignes.get(0).length();
         this.grille = new Element[hauteur][largeur];
+        this.destinationsInitiales = new boolean[hauteur][largeur]; // Initialisation de la mémoire
 
         for (int y = 0; y < hauteur; y++) {
             String ligne = lignes.get(y);
@@ -27,6 +29,9 @@ public class Carte {
                 char c = ligne.charAt(x);
                 Element element = creerElement(c);
                 grille[y][x] = element;
+                if (element instanceof Destination) {
+                    destinationsInitiales[y][x] = true; // Marquer les cases initialement "."
+                }
                 if (element instanceof Joueur joueurElement) {
                     joueur = joueurElement;
                     joueur.setPosition(x, y);
@@ -42,6 +47,7 @@ public class Carte {
         this.hauteur = lignes.size();
         this.largeur = lignes.get(0).length();
         this.grille = new Element[hauteur][largeur];
+        this.destinationsInitiales = new boolean[hauteur][largeur]; // Initialisation de la mémoire
 
         for (int y = 0; y < hauteur; y++) {
             String ligne = lignes.get(y);
@@ -49,6 +55,9 @@ public class Carte {
                 char c = ligne.charAt(x);
                 Element element = creerElement(c);
                 grille[y][x] = element;
+                if (element instanceof Destination) {
+                    destinationsInitiales[y][x] = true; // Marquer les cases initialement "."
+                }
                 if (element instanceof Joueur joueurElement) {
                     joueur = joueurElement;
                     joueur.setPosition(x, y);
@@ -81,7 +90,7 @@ public class Carte {
             if (destination instanceof Sol || destination instanceof Destination) {
                 grille[joueur.getY()][joueur.getX()] = (joueur.isSurDestination()) 
                                                         ? new Destination()
-                                                        : new Sol();
+                                                        : (destinationsInitiales[joueur.getY()][joueur.getX()] ? new Destination() : new Sol()); // Vérification mémoire
                 joueur.setPosition(newX, newY);
                 joueur.setSurDestination(destination instanceof Destination);
                 grille[newY][newX] = joueur;
@@ -99,10 +108,10 @@ public class Carte {
                                                : new Caisse(false);
                         grille[newY][newX] = (caisse.isSurDestination()) 
                                              ? new Destination()
-                                             : new Sol();
+                                             : (destinationsInitiales[newY][newX] ? new Destination() : new Sol()); // Vérification mémoire
                         grille[joueur.getY()][joueur.getX()] = (joueur.isSurDestination()) 
                                                                 ? new Destination()
-                                                                : new Sol();
+                                                                : (destinationsInitiales[joueur.getY()][joueur.getX()] ? new Destination() : new Sol()); // Vérification mémoire
                         joueur.setPosition(newX, newY);
                         joueur.setSurDestination(destination instanceof Destination);
                         grille[newY][newX] = joueur;
@@ -148,6 +157,9 @@ public class Carte {
                 if (element instanceof Joueur joueurElement) {
                     joueur = joueurElement;
                     joueur.setPosition(x, y);
+                }
+                if (destinationsInitiales[y][x]) {
+                    grille[y][x] = new Destination(); // Restaurer les cases "." initiales
                 }
             }
         }
@@ -204,8 +216,3 @@ public class Carte {
         }
     }
 }
-
-//Faire un système de mémoire qui mémorise toutes les cases "." en début de partie.
-//C'est a dire que une case "." ne peut pas devenir une case ".", si une case " " était au départ une case "." alors celle si se change en case "."
-
-//Si ça ne fonctionne pas alors faire en sorte qu'une case "+" qui devenir une case " " soit une case "."
