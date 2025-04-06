@@ -204,3 +204,8 @@ public class Carte {
         }
     }
 }
+
+//Faire un système de mémoire qui mémorise toutes les cases "." en début de partie.
+//C'est a dire que une case "." ne peut pas devenir une case ".", si une case " " était au départ une case "." alors celle si se change en case "."
+
+//Si ça ne fonctionne pas alors faire en sorte qu'une case "+" qui devenir une case " " soit une case "."
