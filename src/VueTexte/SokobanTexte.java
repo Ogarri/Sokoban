@@ -1,3 +1,6 @@
+/**
+ * Classe SokobanTexte permet de jouer à Sokoban en mode texte avec une carte spécifique.
+ */
 package VueTexte;
 
 import Modele.Carte;
@@ -7,6 +10,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class SokobanTexte {
+    /**
+     * Point d'entrée principal pour jouer à Sokoban en mode texte.
+     *
+     * @param args Arguments de la ligne de commande.
+     */
     public static void main(String[] args) {
         List<String> carteTexte;
         try {

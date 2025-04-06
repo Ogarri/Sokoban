@@ -1,3 +1,7 @@
+/**
+ * Classe VueSokoban représente l'interface graphique du jeu Sokoban.
+ * Elle gère l'affichage des éléments du jeu et les interactions clavier.
+ */
 package VueGraphique;
 
 import Modele.Carte;
@@ -9,15 +13,30 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;
 
+/**
+ * Classe VueSokoban représente l'interface graphique du jeu Sokoban.
+ * Elle gère l'affichage des éléments du jeu et les interactions clavier.
+ */
 public class VueSokoban extends JPanel {
     private final Carte carte;
     private final Map<Character, ImageIcon> images;
     private Runnable resetCallback;
 
+    /**
+     * Définit une fonction de rappel pour réinitialiser le niveau.
+     *
+     * @param resetCallback Fonction à exécuter lors de la réinitialisation.
+     */
     public void setResetCallback(Runnable resetCallback) {
         this.resetCallback = resetCallback;
     }
 
+    /**
+     * Constructeur de VueSokoban.
+     * Initialise la carte, charge les images et configure les événements clavier.
+     *
+     * @param carte La carte du jeu à afficher.
+     */
     public VueSokoban(Carte carte) {
         this.carte = carte;
         this.images = new HashMap<>();
@@ -71,6 +90,9 @@ public class VueSokoban extends JPanel {
         });
     }
 
+    /**
+     * Charge les images des différents éléments du jeu.
+     */
     private void chargerImages() {
         images.put('$', new ImageIcon("bin/img/caisse1.gif"));
         images.put('+', new ImageIcon("bin/img/Bas.gif.gif"));
@@ -81,6 +103,11 @@ public class VueSokoban extends JPanel {
         images.put('*', new ImageIcon("bin/img/caisse2.gif"));
     }
 
+    /**
+     * Dessine les éléments du jeu sur le panneau.
+     *
+     * @param g L'objet Graphics utilisé pour dessiner.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

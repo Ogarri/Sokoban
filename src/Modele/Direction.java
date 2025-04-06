@@ -1,3 +1,6 @@
+/**
+ * Énumération Direction représente les directions possibles pour le déplacement.
+ */
 package Modele;
 
 public enum Direction {
@@ -14,10 +17,20 @@ public enum Direction {
         this.dy = dy;
     }
 
+    /**
+     * Retourne le déplacement horizontal associé à la direction.
+     *
+     * @return La valeur dx.
+     */
     public int getDx() {
         return dx;
     }
 
+    /**
+     * Retourne le déplacement vertical associé à la direction.
+     *
+     * @return La valeur dy.
+     */
     public int getDy() {
         return dy;
     }

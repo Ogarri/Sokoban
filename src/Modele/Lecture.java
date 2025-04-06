@@ -1,3 +1,6 @@
+/**
+ * Classe Lecture permet de lire une carte depuis un fichier texte.
+ */
 package Modele;
 
 import java.io.IOException;
@@ -16,6 +19,11 @@ public class Lecture {
         tailleDesLignes = lignes.isEmpty() ? 0 : lignes.get(0).length();
     }
 
+    /**
+     * Retourne les lignes lues depuis le fichier.
+     *
+     * @return Une liste de chaînes représentant les lignes.
+     */
     public List<String> getLignes() {
         return lignes;
     }

@@ -1,3 +1,6 @@
+/**
+ * Classe Sokoban permet de jouer à Sokoban en mode graphique.
+ */
 package VueGraphique;
 
 import Modele.Carte;
@@ -7,6 +10,11 @@ import java.util.List;
 import javax.swing.*;
 
 public class Sokoban {
+    /**
+     * Point d'entrée principal pour jouer à Sokoban en mode graphique.
+     *
+     * @param args Arguments de la ligne de commande.
+     */
     public static void main(String[] args) {
         String[] cartes = {
             "bin/map/map1.txt",

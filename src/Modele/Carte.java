@@ -1,3 +1,7 @@
+/**
+ * Classe Carte représente la carte du jeu Sokoban.
+ * Elle gère les éléments, les déplacements et l'état du jeu.
+ */
 package Modele;
 
 import java.io.IOException;
@@ -80,6 +84,11 @@ public class Carte {
         };
     }
 
+    /**
+     * Déplace le joueur dans une direction donnée.
+     *
+     * @param direction La direction du déplacement.
+     */
     public void deplacerJoueur(Direction direction) {
         int newX = joueur.getX() + direction.getDx();
         int newY = joueur.getY() + direction.getDy();
@@ -126,6 +135,11 @@ public class Carte {
         System.out.println(this);
     }
 
+    /**
+     * Vérifie si la partie est terminée.
+     *
+     * @return true si toutes les caisses sont sur des destinations, sinon false.
+     */
     public boolean finDePartie() {
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {
@@ -147,6 +161,9 @@ public class Carte {
         return true;
     }
 
+    /**
+     * Réinitialise la carte à son état initial.
+     */
     public void reinitialiser() {
         for (int y = 0; y < hauteur; y++) {
             String ligne = carteInitiale.get(y);

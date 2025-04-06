@@ -1,3 +1,6 @@
+/**
+ * Classe ModeTexte permet de jouer à Sokoban en mode texte.
+ */
 package VueTexte;
 
 import Modele.Carte;
@@ -43,10 +46,18 @@ public class ModeTexte {
         commandes.put('r', null);
     }
 
+    /**
+     * Affiche la carte actuelle dans la console.
+     */
     public void afficherCarte() {
         System.out.println(carte.toString());
     }
 
+    /**
+     * Lit une commande de déplacement depuis l'entrée utilisateur.
+     *
+     * @return Le caractère correspondant à la commande.
+     */
     public char lireCommande() {
         Scanner scanner = new Scanner(System.in);
         char commande;
@@ -62,6 +73,9 @@ public class ModeTexte {
         return String.valueOf(lireCommande());
     }
 
+    /**
+     * Lance une partie en mode texte.
+     */
     public void lancerPartie() {
         System.out.println("Début de la partie !");
         afficherCarte();

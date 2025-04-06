@@ -1,3 +1,7 @@
+/**
+ * Classe Joueur représente le joueur dans le jeu.
+ * Le joueur peut être sur une destination ou non.
+ */
 package Modele;
 
 public class Joueur extends Element {
@@ -9,6 +13,12 @@ public class Joueur extends Element {
         this.surDestination = surDestination;
     }
 
+    /**
+     * Définit la position du joueur.
+     *
+     * @param x La position horizontale.
+     * @param y La position verticale.
+     */
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
@@ -30,6 +40,11 @@ public class Joueur extends Element {
         this.surDestination = surDestination;
     }
 
+    /**
+     * Retourne le symbole représentant le joueur.
+     *
+     * @return '+' si le joueur est sur une destination, sinon '@'.
+     */
     @Override
     public char getSymbole() {
         return surDestination ? '+' : '@';
