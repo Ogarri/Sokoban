@@ -43,12 +43,20 @@ Voici un exemple de l'interface graphique du jeu :
    ```bash
    java -cp src VueGraphique.Sokoban
    ```
+2. Ou utilisez le fichier `sokobanBastien.jar` :
+   ```bash
+   java -jar sokobanBastien.jar
+   ```
 
 ### Mode Texte
 
 1. Exécutez la classe `ModeTexte` :
    ```bash
    java -cp src VueTexte.ModeTexte
+   ```
+2. Ou utilisez le fichier `sokobanTexteBastien.jar` :
+   ```bash
+   java -jar sokobanTexteBastien.jar
    ```
 
 ## Contrôles
